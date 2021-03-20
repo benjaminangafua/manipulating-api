@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: aqua;
+        }
+        
+        #inside {
+            margin-bottom: 2%;
+            width: 100%;
+            background-color: blanchedalmond;
+            display: grid;
+            grid-template-columns: 30% 30% 30%;
+        }
+        
+        ul,
+        li {
+            list-style: none;
+        }
+        
+        img {
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="demo">
+
+
+    </div>
+    <script>
+        forkifyApi = () => {
+            fetch('https://forkify-api.herokuapp.com/api/search?q=pizza')
+                .then((resp) => resp.json())
+                .then((data) => {
+                    console.log(data.recipes)
+                    let recipes = data.recipes;
+                    recipes.forEach((data, result) => {
+                        document.getElementById("demo").insertAdjacentHTML("beforebegin",
+                            ` 
+                        <div id="inside">
+                            <ul>
+                                <li> <a href=" ${data.source_url}"><img src="${data.image_url}"></a> </li>  
+                                <li> Publisher: ${data.publisher} </li> 
+                               
+                            </ul>
+                        </div>  
+                    `
+                        )
+                    })
+                })
+        }
+        forkifyApi();
+    </script>
+</body>
+
+</html>

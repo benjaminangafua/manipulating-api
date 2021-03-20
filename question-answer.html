@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: darkslategray;
+        }
+        
+        li {
+            list-style: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <form action="/index2.html">
+        <select name="subject" id="subject">
+            <option value="math">Mathematics </option>
+            <option value="english">English</option>
+        </select>
+        <select onchange="submitForm()" id="question">
+            <option value="2">2</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+        </select>
+        <div>
+            <div>Score:</div>
+            <div>Correct:</div>
+            <div>Wrong:</div>
+        </div>
+        <select name="questions" id="questions">
+
+        </select>
+
+    </form>
+
+
+    <script>
+        function submitForm() {
+            let subject = document.getElementById("subject");
+            let question = document.getElementById("question");
+            let number_of_questions = document.getElementById("questions")
+            fetch(`https://kit-questions.glitch.me/question/${subject.value}/${question.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    let regular_data = Object.entries(data.questions);
+                    console.log(regular_data)
+
+                    regular_data.forEach((element, index) => {
+                        console.log('I am specific', element[1])
+                        number_of_questions.insertAdjacentHTML("beforebegin",
+                            `
+                            <li style="text-align: center;">${element[0]}</li>
+                            <li>${index + 1}. ${element[1].question}</li>
+                        <label>
+                            <li><input type="radio" name="option" id="a"> ${element[1].options.a}</li>
+                            <li><input type="radio" name="option" id="b"> ${element[1].options.b}</li>
+                            <li><input type="radio" name="option" id="c"> ${element[1].options.c}</li>
+                            <li><input type="radio" name="option" id="d"> ${element[1].options.d}</li>
+                            <button type="submit">Submit</button>
+                        </label>
+                        `
+                        )
+
+                    });
+                    // for (let i = 0; i < regular_data.length; i++) {
+
+
+                    // }
+                    // for (const [key, value] of Object.entries(regular_data)) {
+                    //     console.log(`${key}: ${value}`)
+                    // }
+                });
+        }
+    </script>
+</body>
+
+</html>
