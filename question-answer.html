@@ -6,106 +6,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body {
-            background-color: darkslategray;
-        }
-        
-        li {
-            list-style: none;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js"></script>
 </head>
 
 <body>
 
     <form action="/index2.html">
-        <select name="subject" id="subject">
-            <option value="math">Mathematics </option>
-            <option value="english">English</option>
-        </select>
-        <select onchange="submitForm()" id="number-of-question">
-            <option value="2">2</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-        </select>
-        <div>
+        <div id="q-num">
+            <select name="subject" id="subject">
+                <option value="default"selected disabled>SELECT</option>
+                <option value="math">Mathematics </option>
+                <option value="english">English</option>
+            </select>
+            <select onchange="submitForm()" id="number-of-question">
+                <option value="default"selected disabled>SELECT</option>
+                <option value="2">2</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        <div id="score-board">
+            <h1>EXERCISE QUESTIONS</h1>
             <div>Score:</div>
             <div>Correct:</div>
-            <div>Wrong:</div>
+            <div>Wrong:</div> <br>
         </div>
-        <select name="questions" id="questions">
+        <div name="questions" id="questions">
 
-        </select>
-
+            <button type="button" onclick="submitValue()" id="submit">Submit</button>
+        </div>
     </form>
-
-
-    <script>
-        let correct_answer; //answer correct answer
-        function submitForm() {
-            let subject = document.getElementById("subject");
-            let number_of_questions = document.getElementById("number-of-question");
-            let questions_field = document.getElementById("questions")
-            fetch(`https://kit-questions.glitch.me/question/${subject.value}/${number_of_questions.value}`)
-                .then(response => response.json())
-                .then(data => {
-                    //List of questions
-                    let regular_data = Object.entries(data.questions);
-                    console.log(regular_data)
-
-                    regular_data.forEach((element, index) => {
-                        console.log('I am specific', element)
-                        let questions_numbering = element[0]; //Ordering question
-                        let questions = element[1].question; //Question to be answer
-                        let option = element[1].options; //Option
-                        correct_answer = element[1].answer; //answer correct answer
-
-                        console.log('I am the answer', element[1].answer)
-
-
-                        let option_value;
-                        for (const [key, value] of Object.entries(option)) {
-                            option_value += ` 
-                             <li><input type="radio" name="type" id="option" value="${key}"  onclick="answerIs()">${key}: ${value}</input> </li>
-                                                `
-                        }
-                        questions_field.insertAdjacentHTML("beforebegin",
-                            `
-                                <li style="text-align: center;">${questions_numbering}</li>
-                                <li>${index + 1}. ${questions}</li>
-                            <label>
-                                ${option_value}
-
-                                <button type="submit">Submit</button>
-                            </label>
-                            `
-                        )
-
-                    });
-                    // for (let i = 0; i < regular_data.length; i++) {
-
-
-                    // }
-                    // for (const [key, value] of Object.entries(regular_data)) {
-                    //     console.log(`${key}: ${value}`)
-                    // }
-                });
-
-        }
-
-        function answerIs() {
-            let check_value = document.getElementById("option");
-            if (check_value.checked) {
-                var val = check_value.value;
-                console.log("Correct", val)
-
-                // if (check_value === correct_answer) {
-                //     console.log("Correct")
-                // }
-            }
-        };
-    </script>
 </body>
 
 </html>
