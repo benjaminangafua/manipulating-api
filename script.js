@@ -1,71 +1,78 @@
- let correct_answer; //answer correct answer
- function submitForm() {
-     let subject = document.getElementById("subject");
-     let number_of_questions = document.getElementById("number-of-question");
-     let questions_field = document.getElementById("questions");
-     let score_board = document.getElementById("score-board")
+let correct_answer; //answer correct answer
+function questionsForm() {
+    let subject = document.getElementById("subject");
+    let number_of_questions = document.getElementById("number-of-question");
+    let questions_field = document.getElementById("questions");
+    let score_board = document.getElementById("score-board")
 
 
-     //fetching from quiz api
-     fetch(`https://kit-questions.glitch.me/question/${subject.value}/${number_of_questions.value}`)
-         .then(response => response.json())
-         .then(data => {
-             //List of questions
-             let regular_data = Object.entries(data.questions);
-             console.log(regular_data)
+    //fetching from quiz api
+    fetch(`https://kit-questions.glitch.me/question/${subject.value}/${number_of_questions.value}`)
+        .then(response => response.json())
+        .then(data => {
+            //List of questions
+            let regular_data = Object.entries(data.questions);
+            console.log(regular_data)
 
-             regular_data.forEach((element, index) => {
+            regular_data.forEach((element, index) => {
 
-                 console.log('I am specific', element)
-                 let questions_numbering = element[0]; //Ordering question
-                 let questions = element[1].question; //Question to be answer
-                 let option = element[1].options; //Option
-                 correct_answer = element[1].answer; //answer correct answer
+                console.log('I am specific', element)
+                let questions = element[1].question; //Question to be answer
 
-                 console.log('I am the answer', element[1].answer)
+                correct_answer = element[1].answer; //answer correct answer
+                let html = `<div id="quiz-style"> 
+                                <li>${index + 1}. ${questions}</li>
+                                <label >
+                                    <li><input type="radio" name="type" id="a" value="a"  onclick="answerIs(event) ">${element[1].options.a}</input> </li>
+                                    <li><input type="radio" name="type" id="b" value="b"  onclick="answerIs(event)">${element[1].options.b}</input> </li>
+                                    <li><input type="radio" name="type" id="c" value="c"  onclick="answerIs(event)">${element[1].options.c}</input> </li>
+                                    <li><input type="radio" name="type" id="d" value="d"  onclick="answerIs(event)">${element[1].options.d}</input> </li>
+                                </label>
+                            </div>
 
+                            `
 
-                 let option_value;
-                 for (const [key, value] of Object.entries(option)) { //looping through options
-                     option_value += ` 
-                     <li><input type="radio" name="type" id="option" value="${key}"  onclick="answerIs()">${key}: ${value}</input> </li>
-                                        `
-                 }
-                 questions_field.insertAdjacentHTML("beforebegin",
-                     `<div id="quiz-style"> 
-                            <li>${index + 1}. ${questions}</li>
-                        <label >
-                            ${option_value}
+                // let option = element[1].options; //Option
+                // let option_value;
+                // for (const [key, value] of Object.entries(option)) { //looping through options
+                //     option_value += ` 
+                //      <li><input type="radio" name="type" id="option" value="${key}"  onclick="answerIs()">${key}: ${value}</input> </li>
+                //                         `
+                // }
 
-                        </label>
-                    </div>
-
-                    `
-                 )
-
-             });
-             // for (let i = 0; i < regular_data.length; i++) {
+                questions_field.insertAdjacentHTML("beforebegin", html)
 
 
-             // }
-             // for (const [key, value] of Object.entries(regular_data)) {
-             //     console.log(`${key}: ${value}`)
-             // }
-         });
-     score_board.style.display = "block";
-     document.getElementById("q-num").style.display = "none";
-     document.getElementById("submit").style.display = "block";
+            });
+            // for (let i = 0; i < regular_data.length; i++) {
 
- }
 
- function answerIs() {
-     let check_value = document.getElementById("option");
-     if (check_value.checked) {
-         var val = check_value.value;
-         console.log("Correct", val)
+            // }
+            // for (const [key, value] of Object.entries(regular_data)) {
+            //     console.log(`${key}: ${value}`)
+            // }
+        });
+    score_board.style.display = "block";
+    document.getElementById("q-num").style.display = "none";
+    document.getElementById("submit").style.display = "block";
 
-         // if (check_value === correct_answer) {
-         //     console.log("Correct")
-         // }
-     }
- };
+}
+
+function answerIs(ele) {
+    let answer = ele.target.id
+
+    console.log('my answer', ele.target)
+
+    console.log('I am the answer', correct_answer)
+    if (answer === correct_answer) {
+        answer.style = "background #00b300;"
+        console.log('success')
+    } else {
+        answer.style = 'background: #ff5c33;'
+        console.log("try again")
+    }
+
+}
+submitQuestios = () => {
+
+}

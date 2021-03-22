@@ -10,96 +10,71 @@
 <body>
 
 
-
+    <script src="./index2.js"></script>
     <script>
-        getStudent = () => {
-            fetch('https://kit-crud-api.glitch.me/student?api-key=7646438070368')
-                .then((resp) => resp.json())
-                .then((data) => {
-                    console.log(data)
-                });
-        }
-        createStudent = () => {
-            let data = {
-                api_key: "7646438070368",
-                new_data: {
-                    "121": {
-                        id: "121",
-                        name: "James Kollie",
-                        class: "Grade 3",
-                        academic_year: "2020/2021"
-                    },
-                    "112": {
-                        id: "112",
-                        name: "Kortu Sallay",
-                        class: "Grade 3",
-                        academic_year: "2020/2021"
-                    },
-                    "231": {
-                        id: "231",
-                        name: "Kpana Koinjay",
-                        class: "Grade 3",
-                        academic_year: "2020/2021"
-                    }
-                }
-            }
-            fetch('https://kit-crud-api.glitch.me/student', {
-                    method: 'POST',
-                    headers: {
-                        "content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then((resp) => resp.json())
-                .then((data) => {
-                    console.log(data)
-                });
-        }
-        updateStudent = () => {
+        let correct_answer; //answer correct answer
+        function submitForm() {
+            let subject = document.getElementById("subject");
+            let number_of_questions = document.getElementById("number-of-question");
+            let questions_field = document.getElementById("questions");
+            let score_board = document.getElementById("score-board")
 
-            let data = {
-                api_key: "7646438070368",
-                id: "121",
-                new_data: {
-                    id: "121",
-                    name: "James Kollie",
-                    class: "Grade 4",
-                    academic_year: "2020/2021"
-                }
-            }
-            fetch('https://kit-crud-api.glitch.me/student', {
-                    method: 'PUT',
-                    headers: {
-                        "content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then((resp) => resp.json())
-                .then((data) => {
-                    console.log(data)
-                });
-        }
-        deleteStudent = () => {
 
-            let data = {
-                api_key: "7646438070368",
-                id: "121"
-            }
-            fetch('https://kit-crud-api.glitch.me/student', {
-                    method: 'DELETE',
-                    headers: {
-                        "content-Type": "application/json"
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then((resp) => resp.json())
-                .then((data) => {
-                    console.log(data)
+            //fetching from quiz api
+            fetch(`https://kit-questions.glitch.me/question/${subject.value}/${number_of_questions.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    //List of questions
+                    let regular_data = Object.entries(data.questions);
+                    console.log(regular_data)
+
+                    regular_data.forEach((element, index) => {
+
+                        console.log('I am specific', element)
+                        let questions = element[1].question; //Question to be answer
+                        let option = element[1].options; //Option
+                        correct_answer = element[1].answer; //answer correct answer
+
+                        console.log('I am the answer', element[1].answer)
+
+
+                        let option_value;
+                        for (const [key, value] of Object.entries(option)) { //looping through options
+                            option_value += ` 
+                     <li><input type="radio" name="type" id="option" value="${key}"  onclick="answerIs()">${key}: ${value}</input> </li>
+                                        `
+                        }
+                        questions_field.insertAdjacentHTML("beforebegin",
+                            `<div id="quiz-style"> 
+                            <li>${index + 1}. ${questions}</li>
+                        <label >
+                            ${option_value}
+
+                        </label>
+                    </div>
+
+                    `
+                        )
+
+                    });
                 });
+            score_board.style.display = "block";
+            document.getElementById("q-num").style.display = "none";
+            document.getElementById("submit").style.display = "block";
+
         }
-        deleteStudent();
-        updateStudent();
-        createStudent();
+
+        function answerIs() {
+            let check_value = document.querySelectorAll("input");
+            if (check_value.checked) {
+                var val = check_value.value;
+                console.log("Correct", val)
+
+                // if (check_value === correct_answer) {
+                //     console.log("Correct")
+                // }
+            }
+        };
     </script>
 </body>
 
