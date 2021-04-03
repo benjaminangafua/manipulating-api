@@ -10,22 +10,24 @@
 
 <body>
 
-    <input type="radio" name="type" id="option" value="a" onclick="answerIs()"> Select 1</input><br/>
-    <input type="radio" name="type" id="option" value="b" onclick="answerIs()"> Select 2</input><br/>
-    <input type="radio" name="type" id="option" value="c" onclick="answerIs()">Select 3</input>
+    <input type="radio" name="type" id="option" value="a" onclick="answerIs(event)"> Select</input><br/>
+    <input type="radio" name="type" id="option" value="b" onclick="answerIs(event)"> Open</input><br/>
+    <input type="radio" name="type" id="option" value="c" onclick="answerIs(event)"> Close</input>
 
 
 
 
     <script>
-        function answerIs() {
-            let type = document.getElementsByName("option");
-            if (type.checked) {
-                var val = type.value;
-                alert("correct", val);
-            } else if (type.checked) {
-                var val = type.value;
-                alert("correct", val);
+        function answerIs(e) {
+            let type = document.getElementsByName("type");
+            if (type[0].checked) {
+                alert("select");
+
+            } else if (type[1].checked) {
+                alert("open");
+
+            } else if (type[2].checked) {
+                alert("Close");
             }
         };
     </script>
